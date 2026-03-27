@@ -11,13 +11,23 @@ void resetHandler(int){
     exit(0);
 }
 
-int main(){
-    signal(SIGINT,resetHandler);
+int main(int argc, char **argv){
+    // 判断参数是否正确输入：./ChatServer <ip> <port>
+    if (argc < 3) {
+        cerr << "Usage: " << argv[0] << " <ip> <port>" << endl;
+        exit(-1);
+    }
 
+    signal(SIGINT, resetHandler);
     signal(SIGABRT, resetHandler);
 
     EventLoop loop;
-    InetAddress listenAddr(8000,"127.0.0.1");
+
+    // 从命令行读取 IP 和 Port
+    const char *ip = argv[1];
+    uint16_t port = static_cast<uint16_t>(atoi(argv[2]));
+
+    InetAddress listenAddr(port, ip);  
     ChatServer server(&loop, listenAddr, "ChatServer");
 
     server.start();

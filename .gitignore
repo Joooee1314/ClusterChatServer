@@ -5,3 +5,6 @@ bin/
 # 忽略编辑器配置
 .vscode/
 .idea/
+
+# 忽略testjson
+testjson/

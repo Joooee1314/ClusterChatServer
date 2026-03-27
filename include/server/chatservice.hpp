@@ -4,6 +4,7 @@
 #include "offlinemessagemodel.hpp"
 #include "friendmodel.hpp"
 #include "groupmodel.hpp"
+#include "redis.hpp"
 
 #include <mymuduo/TcpConnection.h>
 #include <unordered_map>
@@ -44,6 +45,9 @@ public:
 
     //处理注销业务
     void logout(const TcpConnectionPtr& conn, json& js, Timestamp time);
+
+    //redis消息队列中获取订阅的消息
+    void handleRedisSubscribeMessage(int ,string);
     
     //获取消息对应的处理器
     MsgHandler getHandler(int msgid);
@@ -70,5 +74,8 @@ private:
     OfflineMsgModel offlineMsgModel_;
     FriendModel friendModel_;
     GroupModel groupModel_;
+
+    //redis操作对象
+    Redis redis_;
 
 };
